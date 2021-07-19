@@ -307,7 +307,7 @@ summary_df.columns = summary_df.columns.map(
 # In[133]:
 
 
-summary_df.to_csv('/Users/anna/Documents/covid19/data-studio/data/summary.csv', encoding='utf_8_sig')
+summary_df.to_csv('./data/summary.csv', encoding='utf_8_sig')
 confirmed_df.to_csv('/Users/anna/Documents/covid19/data-studio/data/confirmed.csv', encoding='utf_8_sig')
 deaths_df.to_csv('/Users/anna/Documents/covid19/data-studio/data/deaths.csv', encoding='utf_8_sig')
 recovered_df.to_csv('/Users/anna/Documents/covid19/data-studio/data/recovered.csv', encoding='utf_8_sig')
