@@ -1,7 +1,7 @@
 name: actions 
 on:
   schedule:
-    - cron: '10 4 * * *' 
+    - cron: '15 4 * * *' 
 
 jobs:
   build:
