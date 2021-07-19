@@ -30,4 +30,4 @@ jobs:
           git add .
           git commit -m "daily update"
           git pull
-          git push origin master
+          git push origin main
