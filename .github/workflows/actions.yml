@@ -21,9 +21,9 @@ jobs:
           pip install datetime
           pip install requests
           pip install numpy
-      - name: Run gds_github.py # 
+      - name: Run ./workflows/gds_github.py
         run: |
-          python gds_github.py
+          python ./workflows/gds_github.py
       - name: Commit and Push
         run: |
           git config user.name "AnnaNishino"
