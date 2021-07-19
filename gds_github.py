@@ -308,14 +308,14 @@ summary_df.columns = summary_df.columns.map(
 
 
 summary_df.to_csv('./data/summary.csv', encoding='utf_8_sig')
-confirmed_df.to_csv('/Users/anna/Documents/covid19/data-studio/data/confirmed.csv', encoding='utf_8_sig')
-deaths_df.to_csv('/Users/anna/Documents/covid19/data-studio/data/deaths.csv', encoding='utf_8_sig')
-recovered_df.to_csv('/Users/anna/Documents/covid19/data-studio/data/recovered.csv', encoding='utf_8_sig')
-active_df.to_csv('/Users/anna/Documents/covid19/data-studio/data/active.csv', encoding='utf_8_sig')
-new_cases.to_csv('/Users/anna/Documents/covid19/data-studio/data/new_cases.csv', encoding='utf_8_sig')
-new_deaths.to_csv('/Users/anna/Documents/covid19/data-studio/data/new_deaths.csv', encoding='utf_8_sig')
-new_recovered.to_csv('/Users/anna/Documents/covid19/data-studio/data/new_recovered.csv', encoding='utf_8_sig')
-active_change.to_csv('/Users/anna/Documents/covid19/data-studio/data/active_change.csv', encoding='utf_8_sig')
+confirmed_df.to_csv('./data/confirmed.csv', encoding='utf_8_sig')
+deaths_df.to_csv('./data/deaths.csv', encoding='utf_8_sig')
+recovered_df.to_csv('./data/recovered.csv', encoding='utf_8_sig')
+active_df.to_csv('./data/active.csv', encoding='utf_8_sig')
+new_cases.to_csv('./data/new_cases.csv', encoding='utf_8_sig')
+new_deaths.to_csv('./data/new_deaths.csv', encoding='utf_8_sig')
+new_recovered.to_csv('./data/new_recovered.csv', encoding='utf_8_sig')
+active_change.to_csv('./data/active_change.csv', encoding='utf_8_sig')
 
 
 # #### confirmed
@@ -376,8 +376,8 @@ confirmed_card.head()
 # In[142]:
 
 
-confirmed_card.to_csv('/Users/anna/Documents/covid19/data-studio/data/for_gds/confirmed_card.csv', encoding='utf_8_sig')
-pd.melt(confirmed_df.reset_index(),id_vars='index').to_csv('/Users/anna/Documents/covid19/data-studio/data/for_gds/confirmed_ts.csv', encoding='utf_8_sig')
+confirmed_card.to_csv('./data/for_gds/confirmed_card.csv', encoding='utf_8_sig')
+pd.melt(confirmed_df.reset_index(),id_vars='index').to_csv('./data/for_gds/confirmed_ts.csv', encoding='utf_8_sig')
 
 
 # 
@@ -439,8 +439,8 @@ deaths_card.head()
 # In[151]:
 
 
-deaths_card.to_csv('/Users/anna/Documents/covid19/data-studio/data/for_gds/deaths_card.csv', encoding='utf_8_sig')
-pd.melt(deaths_df.reset_index(),id_vars='index').to_csv('/Users/anna/Documents/covid19/data-studio/data/for_gds/deaths_ts.csv', encoding='utf_8_sig')
+deaths_card.to_csv('./data/for_gds/deaths_card.csv', encoding='utf_8_sig')
+pd.melt(deaths_df.reset_index(),id_vars='index').to_csv('./data/for_gds/deaths_ts.csv', encoding='utf_8_sig')
 
 
 # ### recovered
@@ -573,7 +573,7 @@ latest.head()
 # In[169]:
 
 
-latest.to_csv('/Users/anna/Documents/covid19/data-studio/data/daily_card.csv', encoding='utf_8_sig')
+latest.to_csv('./data/daily_card.csv', encoding='utf_8_sig')
 
 
 # ## 7-day average
@@ -650,14 +650,14 @@ nd_melt
 
 
 pd.merge(nc_melt, pd.melt(new_cases_per_100k.rename_axis('date').reset_index(),id_vars='date',var_name='country_j',value_name='cases_1k'),
-         on=['date','country_j'], how='outer').to_csv('/Users/anna/Documents/covid19/data-studio/data/for_gds/new_cases_7dma.csv', encoding='utf_8_sig')
+         on=['date','country_j'], how='outer').to_csv('./data/for_gds/new_cases_7dma.csv', encoding='utf_8_sig')
 
 
 # In[181]:
 
 
 pd.merge(nd_melt, pd.melt(new_deaths_per_100k.rename_axis('date').reset_index(),id_vars='date',var_name='country_j',value_name='cases_1k'),
-         on=['date','country_j'], how='outer').to_csv('/Users/anna/Documents/covid19/data-studio/data/for_gds/new_deaths_7dma.csv', encoding='utf_8_sig')
+         on=['date','country_j'], how='outer').to_csv('./data/for_gds/new_deaths_7dma.csv', encoding='utf_8_sig')
 
 
 # In[ ]:
