@@ -234,48 +234,6 @@ new_deaths = deaths_df.diff(axis=1).fillna(0).astype(int)
 new_deaths_7dma = new_deaths.drop(new_deaths.columns[-1],axis=1).rolling(window=7,axis=1).mean().dropna(axis=1).sort_values(new_deaths.drop(new_deaths.columns[-1],axis=1).columns[-1],ascending=False)
 
 
-# In[125]:
-
-
-recovered = pd.read_csv(
-    'https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv')
-
-
-# In[126]:
-
-
-recovered.loc[recovered[recovered['Province/State'] == 'Hong Kong'].index,'Country/Region'] = 'Hong Kong'
-recovered.loc[recovered[recovered['Province/State'] == 'Macau'].index,'Country/Region'] = 'Macau'
-recovered_df = recovered.groupby('Country/Region').sum().drop(['Lat','Long'],axis=1)
-recovered_df.columns = pd.to_datetime(recovered_df.columns,format='%m/%d/%y').strftime('%Y-%m-%d')
-
-
-# In[127]:
-
-
-recovered_df = pd.concat([recovered_df,
-                          df.groupby('Country_Region').sum().Recovered.rename((datetime.today() - timedelta(days=1)).strftime('%Y-%m-%d'))],
-                         axis=1,sort=True).fillna(0).astype(int)
-
-
-# In[128]:
-
-
-new_recovered = recovered_df.diff(axis=1).fillna(0).astype(int)
-
-
-# In[129]:
-
-
-active_df = confirmed_df - deaths_df - recovered_df
-active_df.head()
-
-
-# In[130]:
-
-
-active_change = active_df.diff(axis=1).fillna(0).astype(int)
-active_change.head()
 
 
 # In[131]:
@@ -285,23 +243,17 @@ confirmed_df.index = confirmed_df.index.map(countries.set_index('Country').Japan
 new_cases.index = new_cases.index.map(countries.set_index('Country').Japanese.to_dict())
 deaths_df.index = deaths_df.index.map(countries.set_index('Country').Japanese.to_dict())
 new_deaths.index = new_deaths.index.map(countries.set_index('Country').Japanese.to_dict())
-recovered_df.index = recovered_df.index.map(countries.set_index('Country').Japanese.to_dict())
-new_recovered.index = new_recovered.index.map(countries.set_index('Country').Japanese.to_dict())
-active_df.index = active_df.index.map(countries.set_index('Country').Japanese.to_dict())
-active_change.index = active_change.index.map(countries.set_index('Country').Japanese.to_dict())
-
 
 # In[132]:
 
 
 summary_df = pd.concat(
-    [confirmed_df.sum().rename('confirmed'),deaths_df.sum().rename('deaths'),recovered_df.sum().rename('recovered'),
-     active_df.sum().rename('active'),new_cases.sum().astype(int).rename('new_cases'),new_deaths.sum().astype(int).rename('new_deaths'),
-     new_recovered.sum().astype(int).rename('new_recovered'),active_change.sum().astype(int).rename('active_change')],axis=1)
+    [confirmed_df.sum().rename('confirmed'),deaths_df.sum().rename('deaths'),
+     new_cases.sum().astype(int).rename('new_cases'),new_deaths.sum().astype(int).rename('new_deaths')],axis=1)
 
 summary_df.columns = summary_df.columns.map(
-    {'confirmed':'累積感染者数','deaths':'累積死者数','recovered':'累積回復者数','active':'現行感染者数',
-     'new_cases':'新規感染者数','new_deaths':'新規死者数','new_recovered':'新規回復者数','active_change':'現行感染者増減数'})
+    {'confirmed':'累積感染者数','deaths':'累積死者数',
+     'new_cases':'新規感染者数','new_deaths':'新規死者数'})
 
 
 # In[133]:
@@ -310,13 +262,8 @@ summary_df.columns = summary_df.columns.map(
 summary_df.to_csv('./data/summary.csv', encoding='utf_8_sig')
 confirmed_df.to_csv('./data/confirmed.csv', encoding='utf_8_sig')
 deaths_df.to_csv('./data/deaths.csv', encoding='utf_8_sig')
-recovered_df.to_csv('./data/recovered.csv', encoding='utf_8_sig')
-active_df.to_csv('./data/active.csv', encoding='utf_8_sig')
 new_cases.to_csv('./data/new_cases.csv', encoding='utf_8_sig')
 new_deaths.to_csv('./data/new_deaths.csv', encoding='utf_8_sig')
-new_recovered.to_csv('./data/new_recovered.csv', encoding='utf_8_sig')
-active_change.to_csv('./data/active_change.csv', encoding='utf_8_sig')
-
 
 # #### confirmed
 
@@ -443,103 +390,12 @@ deaths_card.to_csv('./data/for_gds/deaths_card.csv', encoding='utf_8_sig')
 pd.melt(deaths_df.reset_index(),id_vars='index').to_csv('./data/for_gds/deaths_ts.csv', encoding='utf_8_sig')
 
 
-# ### recovered
-
-# In[152]:
-
-
-recovered = pd.read_csv(
-    'https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_recovered_global.csv')
-
-
-# In[153]:
-
-
-recovered.loc[recovered[recovered['Province/State'] == 'Hong Kong'].index,'Country/Region'] = 'Hong Kong'
-
-
-# In[154]:
-
-
-recovered.loc[recovered[recovered['Province/State'] == 'Macau'].index,'Country/Region'] = 'Macau'
-
-
-# In[155]:
-
-
-recovered_df = recovered.groupby('Country/Region').sum().drop(['Lat','Long'],axis=1)
-
-
-# In[156]:
-
-
-recovered_df.columns = pd.to_datetime(recovered_df.columns,format='%m/%d/%y').strftime('%Y-%m-%d')
-
-
-# In[157]:
-
-
-recovered_df.index = recovered_df.index.map(countries.set_index('Country').Japanese.to_dict())
-
-
-# In[158]:
-
-
-recovered_df = recovered_df.T
-recovered_df.head()
-
-
-# #### active
-
-# In[159]:
-
-
-active_df = confirmed_df - deaths_df - recovered_df
-active_df.head()
-
-
-# ### JHU daily change data
-
-# In[160]:
-
-
-new_cases = confirmed_df.diff().fillna(0).astype(int)
-
-
-# In[161]:
-
-
-new_deaths = deaths_df.diff().fillna(0).astype(int)
-
-
-# In[162]:
-
-
-new_recovered = recovered_df.diff().fillna(0).astype(int)
-
-
-# In[163]:
-
-
-active_change = active_df.diff().fillna(0).astype(int)
-
-
-# 
-# 
-# 
-# ## Daily mortality & infection rate + connect to GDS
-
-# In[164]:
 
 
 latest = pd.concat([confirmed_df.T[confirmed_df.T.columns[-1]].rename('Confirmed'),
                     deaths_df.T[deaths_df.T.columns[-1]].rename('Deaths'),
-                    recovered_df.T[recovered_df.T.columns[-1]].rename('Recovered'),
-                    active_df.T[active_df.T.columns[-1]].rename('Active'),
                     new_cases.iloc[-1].astype(int).rename('New Cases'),
                     new_deaths.iloc[-1].astype(int).rename('New Deaths'),
-                    new_recovered.iloc[-1].astype(int).rename('New Recovered'),
-                    active_change.iloc[-1].astype(int).rename('Active Change'),
                    (new_cases.T.iloc[:,-7:].sum(axis=1) / new_cases.T.iloc[:,-14:-7].sum(axis=1)).rename('week by week')],axis=1)
 
 
@@ -559,8 +415,8 @@ latest['Mortality Rate'] = latest['Deaths'] / latest['Confirmed']*100
 
 
 latest.columns = latest.columns.map(
-    {'Confirmed':'累計感染者数','Deaths':'累計死者数','Recovered':'累計回復者数','Active':'現行感染者数',
-     'New Cases':'新規感染者数','New Deaths':'新規死者数','New Recovered':'新規回復者数','Active Change':'現行感染者増減数',
+    {'Confirmed':'累計感染者数','Deaths':'累計死者数',
+     'New Cases':'新規感染者数','New Deaths':'新規死者数',
     'Mortality Rate':'致死率','week by week':'一週間累計比'})
 
 
