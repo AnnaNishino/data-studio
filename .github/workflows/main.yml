@@ -20,7 +20,7 @@ jobs:
           pip install datetime
           pip install requests
           pip install numpy
-      - name: Run gds_github.py
+      - name: Run action.py
         run: |
           python gds_github.py
       - name: Commit and Push
