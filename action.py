@@ -291,7 +291,7 @@ latest.head()
 # In[143]:
 
 
-latest.to_csv('/Users/anna/Documents/covid19/data-studio/data/daily_card.csv', encoding='utf_8_sig')
+latest.to_csv('./data/daily_card.csv', encoding='utf_8_sig')
 
 
 # In[144]:
