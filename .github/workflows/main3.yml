@@ -1,7 +1,8 @@
 name: actions 
 
-on:  [ workflow_dispatch ]
-
+on:
+  schedule:
+    - cron: '0 8 * * *'
 
 jobs:
   build:
